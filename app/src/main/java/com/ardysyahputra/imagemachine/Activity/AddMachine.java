@@ -2,10 +2,12 @@ package com.ardysyahputra.imagemachine.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -56,18 +58,63 @@ public class AddMachine extends AppCompatActivity {
         Add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 Name = MachineName.getEditText().getText().toString();
                 Type = MachineType.getEditText().getText().toString();
-                QrCode = Integer.parseInt(MachineQrCode.getEditText().getText().toString());
-                Date = LastMaintenance.getEditText().getText().toString();
-                Log.d("tes","dateee "+Date);
 
-                DatabaseHelper databaseHelper = new DatabaseHelper(AddMachine.this);
-                databaseHelper.addData(Name,Type,QrCode,Date);
-                Toast.makeText(AddMachine.this, "Data Added", Toast.LENGTH_SHORT).show();
+                Date = LastMaintenance.getEditText().getText().toString();
+
+
+                if ( (Name.isEmpty()) || (Type.isEmpty()) || (MachineQrCode.getEditText().getText().toString().isEmpty()) || Date.isEmpty() )
+                {
+                    if (Name.isEmpty())
+                    {
+                        Toast.makeText(AddMachine.this, "Name Cannot Empty", Toast.LENGTH_SHORT).show();
+                        MachineName.getEditText().requestFocus();
+                    }
+                    if (Type.isEmpty())
+                    {
+                        Toast.makeText(AddMachine.this, "Type Cannot Empty", Toast.LENGTH_SHORT).show();
+                        MachineType.getEditText().requestFocus();
+                    }
+                    if (MachineQrCode.getEditText().getText().toString().isEmpty())
+                    {
+                        Toast.makeText(AddMachine.this, "Qr Code Number Cannot Empty", Toast.LENGTH_SHORT).show();
+                        MachineQrCode.getEditText().requestFocus();
+                    }
+                    if (Date.isEmpty())
+                    {
+                        Toast.makeText(AddMachine.this, "Date Cannot Empty", Toast.LENGTH_SHORT).show();
+                        new DatePickerDialog(AddMachine.this, date, myCalendar
+                                .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                                myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+                    }
+                }
+                else
+                {
+                    QrCode = Integer.parseInt(MachineQrCode.getEditText().getText().toString());
+                    DatabaseHelper databaseHelper = new DatabaseHelper(AddMachine.this);
+                    databaseHelper.addData(Name,Type,QrCode,Date);
+                    Toast.makeText(AddMachine.this, "Data Added", Toast.LENGTH_SHORT).show();
+                    MachineName.getEditText().setText("");
+                    MachineType.getEditText().setText("");
+                    MachineQrCode.getEditText().setText("");
+                    LastMaintenance.getEditText().setText("");
+                    hideSoftKeyboard(AddMachine.this);
+                }
+
+
 
             }
         });
+    }
+
+    public static void hideSoftKeyboard(Activity activity) {
+        InputMethodManager inputMethodManager =
+                (InputMethodManager) activity.getSystemService(
+                        Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(
+                activity.getCurrentFocus().getWindowToken(), 0);
     }
 
     DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {

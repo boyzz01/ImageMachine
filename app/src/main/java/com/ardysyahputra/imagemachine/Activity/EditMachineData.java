@@ -64,20 +64,56 @@ public class EditMachineData extends AppCompatActivity {
         Edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 Name = MachineName.getEditText().getText().toString();
                 Type = MachineType.getEditText().getText().toString();
-                QrCode = Integer.parseInt(MachineQrCode.getEditText().getText().toString());
-                Date = LastMaintenance.getEditText().getText().toString();
-                Log.d("tes","dateee "+Date);
 
-                DatabaseHelper databaseHelper = new DatabaseHelper(EditMachineData.this);
-                databaseHelper.updateData(Id,Name,Type,QrCode,Date);
-                Toast.makeText(EditMachineData.this, "Edit Sucsess", Toast.LENGTH_SHORT).show();
+                Date = LastMaintenance.getEditText().getText().toString();
+
+
+                if ( (Name.isEmpty()) || (Type.isEmpty()) || (MachineQrCode.getEditText().getText().toString().isEmpty()) || Date.isEmpty() )
+                {
+                    if (Name.isEmpty())
+                    {
+                        Toast.makeText(EditMachineData.this, "Name Cannot Empty", Toast.LENGTH_SHORT).show();
+                        MachineName.getEditText().requestFocus();
+                    }
+                    if (Type.isEmpty())
+                    {
+                        Toast.makeText(EditMachineData.this, "Type Cannot Empty", Toast.LENGTH_SHORT).show();
+                        MachineType.getEditText().requestFocus();
+                    }
+                    if (MachineQrCode.getEditText().getText().toString().isEmpty())
+                    {
+                        Toast.makeText(EditMachineData.this, "Qr Code Number Cannot Empty", Toast.LENGTH_SHORT).show();
+                        MachineQrCode.getEditText().requestFocus();
+                    }
+                    if (Date.isEmpty())
+                    {
+                        Toast.makeText(EditMachineData.this, "Date Cannot Empty", Toast.LENGTH_SHORT).show();
+                        new DatePickerDialog(EditMachineData.this, date, myCalendar
+                                .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                                myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+                    }
+                }
+                else
+                {
+                    QrCode = Integer.parseInt(MachineQrCode.getEditText().getText().toString());
+                    DatabaseHelper databaseHelper = new DatabaseHelper(EditMachineData.this);
+                    databaseHelper.updateData(Id,Name,Type,QrCode,Date);
+                    Toast.makeText(EditMachineData.this, "Edit Sucsess", Toast.LENGTH_SHORT).show();
+                    Intent intent1 = new Intent(EditMachineData.this,MachineData.class);
+                    startActivity(intent1);
+                    finish();
+                }
+
+
+
 
             }
         });
     }
+
+
 
     DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
 
