@@ -185,7 +185,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery(query, null);
         if (cursor.moveToFirst()){
             do{
-                String Id = cursor.getString(cursor.getColumnIndex("ID"));
+                String Id = cursor.getString(cursor.getColumnIndex("Id_Machine"));
                 String Name = cursor.getString(cursor.getColumnIndex("Name"));
                 String Type = cursor.getString(cursor.getColumnIndex("Type"));
                 int QrNumber = Integer.parseInt(cursor.getString(cursor.getColumnIndex("QR_Code_Number")));
@@ -245,7 +245,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery(query, null);
         if (cursor.moveToFirst()){
             do{
-                Id = cursor.getString(cursor.getColumnIndex("ID"));
+                Id = cursor.getString(cursor.getColumnIndex("Id_Machine"));
             }while(cursor.moveToNext());
         }
         cursor.close();
