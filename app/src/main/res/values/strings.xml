@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">Image Machine</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="label">Machine Name</string>
+    <string name="NameHint">Machine Name</string>
+    <string name="TypeHint">Machine Type</string>
+    <string name="QRHint">Machine QR Number</string>
+    <string name="MaintenanceHint">Last Maintenance Date</string>
+    <string name="extended_fab_label">Sort</string>
+
+
+    <string-array name="sort_items">
+        <item>Name</item>
+        <item>Type</item>
+    </string-array>
+
+    <string-array name="options">
+        <item>Edit This Data</item>
+        <item>Delete This Data</item>
+    </string-array>
+
+</resources>
+
+
