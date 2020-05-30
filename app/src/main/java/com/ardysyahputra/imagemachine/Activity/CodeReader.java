@@ -50,32 +50,33 @@ public class CodeReader extends AppCompatActivity implements ZXingScannerView.Re
         Log.v("TAG", rawResult.getText()); // Prints scan results
         Log.v("TAG", rawResult.getBarcodeFormat().toString());
         int QrNumber = Integer.parseInt(rawResult.toString());
+
         DatabaseHelper databaseHelper = new DatabaseHelper(CodeReader.this);
         String id=databaseHelper.getItemID(QrNumber);
 
-        List<Machine> machineList;
-        machineList= new ArrayList<>();
-        machineList = databaseHelper.getDataFromId(id);
+        if (!id.isEmpty())
+        {
+            List<Machine> machineList;
+            machineList= new ArrayList<>();
+            machineList = databaseHelper.getDataFromId(id);
 
-        Intent intent = new Intent(CodeReader.this, Detail_MachineData.class);
-        intent.putExtra("id",machineList.get(0).getId());
-        intent.putExtra("name",machineList.get(0).getName());
-        intent.putExtra("type",machineList.get(0).getType());
-        intent.putExtra("number",machineList.get(0).getQR_Code_Number());
-        intent.putExtra("last",machineList.get(0).getLast_Maintenance_Date());
-        startActivity(intent);
-        finish();
-        QrScanner.stopCamera();
+            Intent intent = new Intent(CodeReader.this, Detail_MachineData.class);
+            intent.putExtra("id",machineList.get(0).getId());
+            intent.putExtra("name",machineList.get(0).getName());
+            intent.putExtra("type",machineList.get(0).getType());
+            intent.putExtra("number",machineList.get(0).getQR_Code_Number());
+            intent.putExtra("last",machineList.get(0).getLast_Maintenance_Date());
+            startActivity(intent);
+            finish();
+            QrScanner.stopCamera();
+        }
 
+        else
+        {
+            Toast.makeText(this, "Not Match Any Data", Toast.LENGTH_SHORT).show();
+            QrScanner.resumeCameraPreview(this);
+        }
 
-
-//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//        builder.setTitle("Scan Result");
-//        builder.setMessage(rawResult.getText());
-//        AlertDialog alert1 = builder.create();
-//        alert1.show();
-
-//        QrScanner.resumeCameraPreview(this);
     }
 
     @Override
